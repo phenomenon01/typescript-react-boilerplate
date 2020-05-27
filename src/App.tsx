@@ -17,27 +17,32 @@ const AsyncDashboard = Loadable({
   loading: LoadingModal,
 });
 
-const App:React.FC<AppPropsType> = (props:AppPropsType) => {
+const AsyncPageNotFound = Loadable({
+  loader: () => import("./views/AsyncPageNotFound"),
+  loading: LoadingModal,
+});
+
+const App: React.FC<AppPropsType> = (props: AppPropsType) => {
   return (
     <Router history={history}>
-        <Switch>
-          <PrivateRoute path="/" component={AsyncDashboard} exact />
-          <PrivateRoute
-            path="/login"
-            isAuth={!props.isAuthenticated}
-            redirect="/"
-            component={AsyncLogin}
-            exact
-          />
-          <Route path="/page-not-found" component={AsyncDashboard} exact />
-          <Redirect from="*" to="/page-not-found" />
-        </Switch>
+      <Switch>
+        <PrivateRoute path="/" component={AsyncDashboard} exact />
+        <PrivateRoute
+          path="/login"
+          isAuth={!props.isAuthenticated}
+          redirect="/"
+          component={AsyncLogin}
+          exact
+        />
+        <Route path="/page-not-found" component={AsyncPageNotFound} exact />
+        <Redirect from="*" to="/page-not-found" />
+      </Switch>
     </Router>
   );
 };
 
 interface AppPropsType {
-  isAuthenticated:boolean
+  isAuthenticated: boolean
 }
 
 export default useAuth(App);
